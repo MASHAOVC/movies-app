@@ -15,13 +15,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "prepare": "husky",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,html}\"",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -33,6 +32,18 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx}": [
+      "npm run lint:fix",
+      "prettier --write"
     ]
   }
 }
