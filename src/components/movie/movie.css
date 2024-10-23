@@ -1,0 +1,47 @@
+.movie {
+    height: 279px;
+}
+
+.movie__title {
+    margin: 0;
+    margin-bottom: 7px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.movie__poster {
+    width: 183px;
+    height: 100%;
+}
+
+.movie__content-wrapper {
+    padding: 10px 20px 0;
+    width: 268px; 
+}
+
+.movie__date {
+    margin-bottom: 7px;
+    color: #827E7E;
+    font-size: 12px;
+}
+
+.movie__rating {
+    position: absolute;
+    top: 10px;
+    right: 9px;
+}
+
+.movie__genre-wrapper {
+    margin-bottom: 7px;
+}
+
+.movie__genre-item {
+    padding-inline: 4px;
+}
+
+.movie__description {
+    margin: 0;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: 500;
+}
