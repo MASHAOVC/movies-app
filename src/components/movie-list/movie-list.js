@@ -5,27 +5,17 @@ import Movie from '../movie';
 
 export default class MovieList extends Component {
   render() {
-    return (
-      <ul className="movie-list">
-        <li className="movie-list__item">
-          <Movie />
+    const { moviesData } = this.props;
+
+    const elements = moviesData.map((el) => {
+      const { id } = el;
+      console.log(el);
+      return (
+        <li key={id} className="movie-list__item">
+          <Movie {...el} />
         </li>
-        <li className="movie-list__item">
-          <Movie />
-        </li>
-        <li className="movie-list__item">
-          <Movie />
-        </li>
-        <li className="movie-list__item">
-          <Movie />
-        </li>
-        <li className="movie-list__item">
-          <Movie />
-        </li>
-        <li className="movie-list__item">
-          <Movie />
-        </li>
-      </ul>
-    );
+      );
+    });
+    return <ul className="movie-list">{elements}</ul>;
   }
 }
