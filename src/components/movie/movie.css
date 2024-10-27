@@ -7,11 +7,7 @@
     margin-bottom: 7px;
     font-size: 20px;
     font-weight: 500;
-}
-
-.movie__poster {
-    width: 183px;
-    height: 100%;
+    max-width: 190px;
 }
 
 .movie__content-wrapper {

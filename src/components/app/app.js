@@ -5,70 +5,61 @@ import Header from '../header';
 import MovieList from '../movie-list';
 import Footer from '../footer';
 import MoviesService from '../../services/movies-service';
+import { format } from 'date-fns';
 
 export default class App extends Component {
   constructor() {
     super();
+    this.updateMovieList();
     this.state = {
-      moviesData: [
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 1,
-        },
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 2,
-        },
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 3,
-        },
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 4,
-        },
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 5,
-        },
-        {
-          title: 'The Lobster',
-          date: 'May 15, 2015',
-          description: 'A',
-          poster: 'https://poster4.me/wp-content/uploads/2020/05/lobster_2-768x1152.jpg',
-          id: 6,
-        },
-      ],
+      moviesData: [],
+      loading: true,
+      error: false,
     };
   }
 
+  MoviesService = new MoviesService();
+
+  updateMovieList() {
+    this.MoviesService.getAllMovies()
+      .then((arr) => {
+        let newArr = arr.map((el) => {
+          return {
+            poster: el.poster_path ? 'https://image.tmdb.org/t/p/original/' + el.poster_path : '',
+            title: el.title,
+            date: el.release_date ? format(new Date(el.release_date), 'MMMM d, yyyy') : el.release_date,
+            description: el.overview,
+            id: el.id,
+          };
+        });
+        this.onMovieListLoaded(newArr);
+      })
+      .catch(this.onError);
+  }
+
+  onMovieListLoaded(newArr) {
+    this.setState({
+      moviesData: newArr,
+      loading: false,
+    });
+  }
+
+  onError = (err) => {
+    this.setState({
+      error: true,
+      loading: false,
+    });
+  };
+
   render() {
-    const { moviesData } = this.state;
+    const { moviesData, loading, error } = this.state;
 
     return (
       <section className="app">
         <Header />
-        <MovieList moviesData={moviesData} />
+        <MovieList moviesData={moviesData} loading={loading} error={error} />
         <Footer />
       </section>
     );
   }
 }
-
-const s = new MoviesService();
-s.getAllMovies();

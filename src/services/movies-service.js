@@ -11,7 +11,7 @@ export default class MoviesService {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${url}` + `, recieved ${response.status}`);
+      throw new Error(`Could not fetch ${url}, recieved ${response.status}`);
     }
 
     return await response.json();
@@ -21,6 +21,6 @@ export default class MoviesService {
     const res = await this.getResource(
       'https://api.themoviedb.org/3/search/movie?query=Lobster&include_adult=false&language=en-US&page=1'
     );
-    console.log(res.results);
+    return res.results;
   }
 }

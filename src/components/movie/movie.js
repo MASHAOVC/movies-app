@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './movie.css';
-import { Flex, Tag } from 'antd';
+import { Flex, Tag, Image } from 'antd';
+import { posterFallback } from './poster-fallback';
 
 export default class Movie extends Component {
   shortenText = (description) => {
@@ -27,7 +28,14 @@ export default class Movie extends Component {
 
     return (
       <Flex className="movie">
-        <img className="movie__poster" src={poster} alt="Poster" />
+        <Image
+          className="movie__poster"
+          style={{ width: '183px', height: '100%', objectFit: 'cover' }}
+          fallback={posterFallback}
+          preview={Boolean(poster)}
+          src={poster}
+          alt="Poster"
+        />
         <div className="movie__content-wrapper">
           <header>
             <h1 className="movie__title">{title}</h1>
