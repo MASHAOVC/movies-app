@@ -4,6 +4,12 @@ import { Input } from 'antd';
 
 export default class SearchPanel extends Component {
   render() {
-    return <Input className="search-panel" placeholder="Type to search..."></Input>;
+    return (
+      <Input
+        className="search-panel"
+        placeholder="Type to search..."
+        style={{ fontFamily: "'Inter', sans-serif", fontSize: '16px' }}
+      ></Input>
+    );
   }
 }
