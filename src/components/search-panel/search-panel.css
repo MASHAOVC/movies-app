@@ -1,0 +1,7 @@
+.search-panel {
+    width: 938px;
+    height: 40px;
+    display: flex;
+    justify-self: center;
+    margin-bottom: 34px;
+}
