@@ -6,6 +6,7 @@ import MovieList from '../movie-list';
 import Footer from '../footer';
 import MoviesService from '../../services/movies-service';
 import { format } from 'date-fns';
+import { Online, Offline } from 'react-detect-offline';
 
 export default class App extends Component {
   constructor() {
@@ -56,9 +57,12 @@ export default class App extends Component {
 
     return (
       <section className="app">
-        <Header />
-        <MovieList moviesData={moviesData} loading={loading} error={error} />
-        <Footer />
+        <Online>
+          <Header />
+          <MovieList moviesData={moviesData} loading={loading} error={error} />
+          <Footer />
+        </Online>
+        <Offline>You're offline right now. Check your connection.</Offline>
       </section>
     );
   }
