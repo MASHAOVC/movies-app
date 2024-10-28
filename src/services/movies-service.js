@@ -22,6 +22,7 @@ export default class MoviesService {
     const res = await this.getResource(
       `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=1`
     );
+
     return res.results;
   }
 }

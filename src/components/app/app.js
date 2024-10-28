@@ -5,27 +5,29 @@ import Header from '../header';
 import MovieList from '../movie-list';
 import Footer from '../footer';
 import MoviesService from '../../services/movies-service';
+import { debounce } from 'lodash';
 
 import { format } from 'date-fns';
-import { Online, Offline } from 'react-detect-offline';
-import debounce from 'lodash/debounce';
 
 export default class App extends Component {
   constructor() {
     super();
-    this.updateMovieList();
+    this.debouncedUpdateMovieList();
     this.state = {
       moviesData: [],
       loading: true,
       error: false,
       inputLabel: '',
+      moviesDataLoaded: false,
     };
   }
 
   MoviesService = new MoviesService();
-  debouncedUpdateMovieList = debounce(this.updateMovieList, 500);
+  debouncedUpdateMovieList = debounce((text) => this.updateMovieList(text), 500);
 
   updateMovieList(text) {
+    this.setState({ loading: true, error: false });
+
     this.MoviesService.getAllMovies(text)
       .then((arr) => {
         let newArr = arr.map((el) => {
@@ -37,15 +39,16 @@ export default class App extends Component {
             id: el.id,
           };
         });
-        this.onMovieListLoaded(newArr);
+        this.onMovieListLoaded(newArr, text);
       })
       .catch(this.onError);
   }
 
-  onMovieListLoaded(newArr) {
+  onMovieListLoaded(newArr, text) {
     this.setState({
       moviesData: newArr,
       loading: false,
+      moviesDataLoaded: true,
     });
   }
 
@@ -65,16 +68,19 @@ export default class App extends Component {
   };
 
   render() {
-    const { moviesData, loading, error, inputLabel } = this.state;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded } = this.state;
 
     return (
       <section className="app">
-        <Online>
-          <Header label={inputLabel} onInputChange={this.onInputChange} />
-          <MovieList moviesData={moviesData} loading={loading} error={error} />
-          <Footer />
-        </Online>
-        <Offline>You're offline right now. Check your connection.</Offline>
+        <Header label={inputLabel} onInputChange={this.onInputChange} />
+        <MovieList
+          moviesData={moviesData}
+          loading={loading}
+          error={error}
+          inputLabel={inputLabel}
+          moviesDataLoaded={moviesDataLoaded}
+        />
+        <Footer />
       </section>
     );
   }
