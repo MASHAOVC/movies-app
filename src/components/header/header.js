@@ -6,10 +6,12 @@ import SearchPanel from '../search-panel';
 
 export default class Header extends Component {
   render() {
+    const { label, onInputChange } = this.props;
+
     return (
       <header>
         <Tabs />
-        <SearchPanel />
+        <SearchPanel label={label} onInputChange={onInputChange} />
       </header>
     );
   }

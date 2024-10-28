@@ -17,9 +17,10 @@ export default class MoviesService {
     return await response.json();
   }
 
-  async getAllMovies() {
+  async getAllMovies(text) {
+    if (!text) return [];
     const res = await this.getResource(
-      'https://api.themoviedb.org/3/search/movie?query=Lobster&include_adult=false&language=en-US&page=1'
+      `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=1`
     );
     return res.results;
   }

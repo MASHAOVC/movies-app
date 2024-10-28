@@ -5,8 +5,10 @@ import Header from '../header';
 import MovieList from '../movie-list';
 import Footer from '../footer';
 import MoviesService from '../../services/movies-service';
+
 import { format } from 'date-fns';
 import { Online, Offline } from 'react-detect-offline';
+import debounce from 'lodash/debounce';
 
 export default class App extends Component {
   constructor() {
@@ -16,13 +18,15 @@ export default class App extends Component {
       moviesData: [],
       loading: true,
       error: false,
+      inputLabel: '',
     };
   }
 
   MoviesService = new MoviesService();
+  debouncedUpdateMovieList = debounce(this.updateMovieList, 500);
 
-  updateMovieList() {
-    this.MoviesService.getAllMovies()
+  updateMovieList(text) {
+    this.MoviesService.getAllMovies(text)
       .then((arr) => {
         let newArr = arr.map((el) => {
           return {
@@ -52,13 +56,21 @@ export default class App extends Component {
     });
   };
 
+  onInputChange = (text) => {
+    this.setState({
+      inputLabel: text,
+    });
+
+    this.debouncedUpdateMovieList(text);
+  };
+
   render() {
-    const { moviesData, loading, error } = this.state;
+    const { moviesData, loading, error, inputLabel } = this.state;
 
     return (
       <section className="app">
         <Online>
-          <Header />
+          <Header label={inputLabel} onInputChange={this.onInputChange} />
           <MovieList moviesData={moviesData} loading={loading} error={error} />
           <Footer />
         </Online>
