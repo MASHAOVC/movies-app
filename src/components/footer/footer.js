@@ -4,10 +4,19 @@ import { Pagination } from 'antd';
 
 export default class Footer extends Component {
   render() {
+    const { onPaginationChange, page, totalPages } = this.props;
+
     return (
       <div className="footer">
-        {' '}
-        <Pagination defaultCurrent={1} total={50} />{' '}
+        {totalPages > 1 ? (
+          <Pagination
+            defaultCurrent={page}
+            total={totalPages}
+            onChange={(page, pageSize) => {
+              onPaginationChange(page);
+            }}
+          />
+        ) : null}
       </div>
     );
   }

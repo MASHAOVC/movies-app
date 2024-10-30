@@ -17,12 +17,12 @@ export default class MoviesService {
     return await response.json();
   }
 
-  async getAllMovies(text) {
+  async getAllMovies(text, page) {
     if (!text) return [];
     const res = await this.getResource(
-      `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=1`
+      `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=${page}`
     );
 
-    return res.results;
+    return res;
   }
 }

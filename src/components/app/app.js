@@ -13,26 +13,29 @@ import { format } from 'date-fns';
 export default class App extends Component {
   constructor() {
     super();
-    this.debouncedUpdateMovieList();
     this.state = {
       moviesData: [],
-      loading: true,
+      loading: false,
       error: false,
       inputLabel: '',
       moviesDataLoaded: false,
       network: true,
+      page: 1,
+      totalPages: 1,
     };
   }
 
   MoviesService = new MoviesService();
-  debouncedUpdateMovieList = debounce((text) => this.updateMovieList(text), 500);
+  debouncedUpdateMovieList = debounce((text, page) => this.updateMovieList(text, page), 500);
 
-  updateMovieList(text) {
+  updateMovieList(text, page) {
     this.setState({ loading: true, error: false });
 
-    this.MoviesService.getAllMovies(text)
-      .then((arr) => {
-        let newArr = arr.map((el) => {
+    this.MoviesService.getAllMovies(text, page)
+      .then((res) => {
+        const totalPages = res.total_pages;
+
+        let newArr = res.results.map((el) => {
           return {
             poster: el.poster_path ? 'https://image.tmdb.org/t/p/original/' + el.poster_path : '',
             title: el.title,
@@ -41,15 +44,17 @@ export default class App extends Component {
             id: el.id,
           };
         });
-        this.onMovieListLoaded(newArr, text);
+        this.onMovieListLoaded(newArr, text, totalPages);
       })
       .catch(this.onError);
   }
 
-  onMovieListLoaded(newArr, text) {
+  onMovieListLoaded(newArr, text, totalPages) {
     this.setState({
       moviesData: newArr,
       loading: false,
+      moviesDataLoaded: Boolean(text),
+      totalPages,
     });
   }
 
@@ -61,19 +66,31 @@ export default class App extends Component {
   };
 
   onInputChange = (text) => {
-    this.setState({
-      inputLabel: text,
-    });
+    const { page } = this.state;
 
-    this.debouncedUpdateMovieList(text);
+    this.setState((state) => ({
+      inputLabel: text,
+      moviesDataLoaded: !text ? false : state.moviesDataLoaded,
+    }));
+
+    this.debouncedUpdateMovieList(text, page);
   };
 
   onNetworkState = () => {
     this.setState((prevState) => ({ network: !prevState.network }));
   };
 
+  onPaginationChange = (page) => {
+    const { inputLabel } = this.state;
+    this.updateMovieList(inputLabel, page);
+
+    this.setState({
+      page,
+    });
+  };
+
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network } = this.state;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, page, totalPages } = this.state;
 
     return (
       <section className="app">
@@ -87,7 +104,7 @@ export default class App extends Component {
           moviesDataLoaded={moviesDataLoaded}
           network={network}
         />
-        <Footer />
+        <Footer onPaginationChange={this.onPaginationChange} page={page} totalPages={totalPages} />
       </section>
     );
   }
