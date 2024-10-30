@@ -5,7 +5,7 @@ import Movie from '../movie';
 
 export default class MovieList extends Component {
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded } = this.props;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network } = this.props;
 
     const elements = moviesData.map((el) => {
       const { id } = el;
@@ -16,6 +16,22 @@ export default class MovieList extends Component {
         </li>
       );
     });
+
+    if (!network)
+      return (
+        <Alert
+          message={"You're offline! Check the connection."}
+          type="info"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            width: '275px',
+            height: '39.6px',
+            marginBottom: '36px',
+            display: 'flex',
+            justifySelf: 'center',
+          }}
+        />
+      );
 
     if (error)
       return (

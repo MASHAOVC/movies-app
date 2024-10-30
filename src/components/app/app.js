@@ -5,8 +5,9 @@ import Header from '../header';
 import MovieList from '../movie-list';
 import Footer from '../footer';
 import MoviesService from '../../services/movies-service';
-import { debounce } from 'lodash';
+import NetworkState from '../network-state/network-state';
 
+import { debounce } from 'lodash';
 import { format } from 'date-fns';
 
 export default class App extends Component {
@@ -19,6 +20,7 @@ export default class App extends Component {
       error: false,
       inputLabel: '',
       moviesDataLoaded: false,
+      network: true,
     };
   }
 
@@ -48,7 +50,6 @@ export default class App extends Component {
     this.setState({
       moviesData: newArr,
       loading: false,
-      moviesDataLoaded: true,
     });
   }
 
@@ -67,11 +68,16 @@ export default class App extends Component {
     this.debouncedUpdateMovieList(text);
   };
 
+  onNetworkState = () => {
+    this.setState((prevState) => ({ network: !prevState.network }));
+  };
+
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded } = this.state;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network } = this.state;
 
     return (
       <section className="app">
+        <NetworkState onNetworkState={this.onNetworkState} />
         <Header label={inputLabel} onInputChange={this.onInputChange} />
         <MovieList
           moviesData={moviesData}
@@ -79,6 +85,7 @@ export default class App extends Component {
           error={error}
           inputLabel={inputLabel}
           moviesDataLoaded={moviesDataLoaded}
+          network={network}
         />
         <Footer />
       </section>
