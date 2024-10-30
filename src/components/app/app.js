@@ -21,7 +21,7 @@ export default class App extends Component {
       moviesDataLoaded: false,
       network: true,
       page: 1,
-      totalPages: 1,
+      totalResults: 50,
     };
   }
 
@@ -33,7 +33,7 @@ export default class App extends Component {
 
     this.MoviesService.getAllMovies(text, page)
       .then((res) => {
-        const totalPages = res.total_pages;
+        const totalResults = res.total_results;
 
         let newArr = res.results.map((el) => {
           return {
@@ -44,17 +44,17 @@ export default class App extends Component {
             id: el.id,
           };
         });
-        this.onMovieListLoaded(newArr, text, totalPages);
+        this.onMovieListLoaded(newArr, text, totalResults);
       })
       .catch(this.onError);
   }
 
-  onMovieListLoaded(newArr, text, totalPages) {
+  onMovieListLoaded(newArr, text, totalResults) {
     this.setState({
       moviesData: newArr,
       loading: false,
       moviesDataLoaded: Boolean(text),
-      totalPages,
+      totalResults,
     });
   }
 
@@ -90,7 +90,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, page, totalPages } = this.state;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, page, totalResults } = this.state;
 
     return (
       <section className="app">
@@ -104,7 +104,7 @@ export default class App extends Component {
           moviesDataLoaded={moviesDataLoaded}
           network={network}
         />
-        <Footer onPaginationChange={this.onPaginationChange} page={page} totalPages={totalPages} />
+        <Footer onPaginationChange={this.onPaginationChange} page={page} totalResults={totalResults} />
       </section>
     );
   }
