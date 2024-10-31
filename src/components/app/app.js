@@ -21,7 +21,7 @@ export default class App extends Component {
       moviesDataLoaded: false,
       network: true,
       page: 1,
-      totalResults: 50,
+      totalResults: 0,
     };
   }
 
@@ -35,7 +35,7 @@ export default class App extends Component {
       .then((res) => {
         const totalResults = res.total_results;
 
-        let newArr = res.results.map((el) => {
+        let newArr = (res.results || []).map((el) => {
           return {
             poster: el.poster_path ? 'https://image.tmdb.org/t/p/original/' + el.poster_path : '',
             title: el.title,
@@ -59,6 +59,8 @@ export default class App extends Component {
   }
 
   onError = (err) => {
+    console.error(err);
+
     this.setState({
       error: true,
       loading: false,
@@ -71,6 +73,7 @@ export default class App extends Component {
     this.setState((state) => ({
       inputLabel: text,
       moviesDataLoaded: !text ? false : state.moviesDataLoaded,
+      page: 1,
     }));
 
     this.debouncedUpdateMovieList(text, page);
@@ -82,6 +85,7 @@ export default class App extends Component {
 
   onPaginationChange = (page) => {
     const { inputLabel } = this.state;
+
     this.updateMovieList(inputLabel, page);
 
     this.setState({
@@ -104,7 +108,14 @@ export default class App extends Component {
           moviesDataLoaded={moviesDataLoaded}
           network={network}
         />
-        <Footer onPaginationChange={this.onPaginationChange} page={page} totalResults={totalResults} />
+        <Footer
+          onPaginationChange={this.onPaginationChange}
+          page={page}
+          totalResults={totalResults}
+          moviesData={moviesData}
+          inputLabel={inputLabel}
+          loading={loading}
+        />
       </section>
     );
   }

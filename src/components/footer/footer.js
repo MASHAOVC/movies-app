@@ -4,17 +4,22 @@ import { Pagination } from 'antd';
 
 export default class Footer extends Component {
   render() {
-    const { onPaginationChange, page, totalResults } = this.props;
+    const { onPaginationChange, page, totalResults, moviesData, inputLabel, loading } = this.props;
 
     return (
       <div className="footer">
-        <Pagination
-          defaultCurrent={page}
-          total={totalResults}
-          onChange={(page, pageSize) => {
-            onPaginationChange(page);
-          }}
-        />
+        {moviesData.length > 0 && inputLabel && !loading && (
+          <Pagination
+            current={page}
+            total={totalResults}
+            pageSize={20}
+            hideOnSinglePage={true}
+            showSizeChanger={false}
+            onChange={(page, pageSize) => {
+              onPaginationChange(page);
+            }}
+          />
+        )}
       </div>
     );
   }

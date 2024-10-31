@@ -5,7 +5,9 @@ import { posterFallback } from './poster-fallback';
 
 export default class Movie extends Component {
   shortenText = (description) => {
-    if (description.length <= 200) {
+    const maxLength = 150;
+
+    if (description.length <= maxLength) {
       return description;
     }
 
@@ -13,7 +15,7 @@ export default class Movie extends Component {
     let resultString = '';
 
     for (let i = 0; i < words.length; i++) {
-      if (resultString.length <= 200 - words[i].length) {
+      if ((resultString + words[i]).length + 1 <= maxLength) {
         resultString += words[i] + ' ';
       } else {
         break;
