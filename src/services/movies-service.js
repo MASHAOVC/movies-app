@@ -17,6 +17,18 @@ export default class MoviesService {
     return await response.json();
   }
 
+  get validSessionId() {
+    const sessionId = localStorage.getItem('guest_session_id');
+    const sessionExpiry = localStorage.getItem('expires_at');
+    const sessionExpiryInMilliseconds = new Date(sessionExpiry).getTime();
+
+    if (!sessionId || !sessionExpiry || Date.now() >= sessionExpiryInMilliseconds) {
+      return null;
+    }
+
+    return sessionId;
+  }
+
   async getAllMovies(text, page) {
     if (!text) return [];
     const res = await this.getResource(
@@ -27,11 +39,7 @@ export default class MoviesService {
   }
 
   async initGuestSession() {
-    const sessionId = localStorage.getItem('guest_session_id');
-    const sessionExpiry = localStorage.getItem('expires_at');
-    const sessionExpiryInMilliseconds = new Date(sessionExpiry).getTime();
-
-    if (!sessionId || !sessionExpiry || Date.now() >= sessionExpiryInMilliseconds) {
+    if (!this.validSessionId) {
       const res = await this.getResource('https://api.themoviedb.org/3/authentication/guest_session/new');
 
       localStorage.setItem('guest_session_id', res.guest_session_id);
