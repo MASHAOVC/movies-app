@@ -28,6 +28,10 @@ export default class App extends Component {
   MoviesService = new MoviesService();
   debouncedUpdateMovieList = debounce((text, page) => this.updateMovieList(text, page), 500);
 
+  componentDidMount() {
+    this.MoviesService.initGuestSession().catch(this.onError);
+  }
+
   updateMovieList(text, page) {
     this.setState({ loading: true, error: false });
 

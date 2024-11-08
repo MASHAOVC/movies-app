@@ -25,4 +25,17 @@ export default class MoviesService {
 
     return res;
   }
+
+  async initGuestSession() {
+    const sessionId = localStorage.getItem('guest_session_id');
+    const sessionExpiry = localStorage.getItem('expires_at');
+    const sessionExpiryInMilliseconds = new Date(sessionExpiry).getTime();
+
+    if (!sessionId || !sessionExpiry || Date.now() >= sessionExpiryInMilliseconds) {
+      const res = await this.getResource('https://api.themoviedb.org/3/authentication/guest_session/new');
+
+      localStorage.setItem('guest_session_id', res.guest_session_id);
+      localStorage.setItem('expires_at', res.expires_at);
+    }
+  }
 }
