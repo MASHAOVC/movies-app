@@ -14,17 +14,26 @@ export default class App extends Component {
     this.MoviesService.initGuestSession().catch(this.onError);
   }
 
+  onError = (err) => {
+    console.error(err);
+
+    this.setState({
+      error: true,
+      loading: false,
+    });
+  };
+
   render() {
     const tabs = [
       {
         key: '1',
         label: 'Search',
-        children: <Search />,
+        children: <Search onError={this.onError} />,
       },
       {
         key: '2',
         label: 'Rated',
-        children: <Rated />,
+        children: <Rated onError={this.onError} />,
       },
     ];
 

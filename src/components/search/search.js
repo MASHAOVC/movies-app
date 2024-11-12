@@ -29,6 +29,8 @@ export default class Search extends Component {
   debouncedUpdateMovieList = debounce((text, page) => this.updateMovieList(text, page), 500);
 
   updateMovieList(text, page) {
+    const { onError } = this.props;
+
     this.setState({ loading: true, error: false });
 
     this.MoviesService.getAllMovies(text, page)
@@ -46,7 +48,7 @@ export default class Search extends Component {
         });
         this.onMovieListLoaded(newArr, text, totalResults);
       })
-      .catch(this.onError);
+      .catch(onError);
   }
 
   onMovieListLoaded(newArr, text, totalResults) {
@@ -57,15 +59,6 @@ export default class Search extends Component {
       totalResults,
     });
   }
-
-  onError = (err) => {
-    console.error(err);
-
-    this.setState({
-      error: true,
-      loading: false,
-    });
-  };
 
   onInputChange = (text) => {
     const { page } = this.state;
