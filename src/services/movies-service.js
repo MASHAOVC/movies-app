@@ -68,18 +68,20 @@ export default class MoviesService {
     }
   }
 
-  async postRating(rating) {
+  async postRating(rating, id) {
+    if (!rating) return;
+
     const res = await this.postResource(
-      `https://api.themoviedb.org/3/movie/1/rating?guest_session_id=${this.validSessionId}`,
+      `https://api.themoviedb.org/3/movie/${id}/rating?guest_session_id=${this.validSessionId}`,
       { value: rating }
     );
 
     return res;
   }
 
-  async getRatedMovies() {
+  async getRatedMovies(page) {
     const res = await this.getResource(
-      `https://api.themoviedb.org/3/guest_session/${this.validSessionId}/rated/movies`
+      `https://api.themoviedb.org/3/guest_session/${this.validSessionId}/rated/movies?page=${page}`
     );
 
     return res;

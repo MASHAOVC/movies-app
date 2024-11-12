@@ -23,12 +23,20 @@ export default class App extends Component {
     });
   };
 
+  onRatingChange = (value, id) => {
+    this.MoviesService.postRating(value, id)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(this.onError);
+  };
+
   render() {
     const tabs = [
       {
         key: '1',
         label: 'Search',
-        children: <Search onError={this.onError} />,
+        children: <Search onError={this.onError} onRatingChange={this.onRatingChange} />,
       },
       {
         key: '2',

@@ -5,14 +5,14 @@ import Movie from '../movie';
 
 export default class MovieList extends Component {
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network } = this.props;
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, onRatingChange } = this.props;
 
     const elements = moviesData.map((el) => {
       const { id } = el;
 
       return (
         <li key={id} className="movie-list__item">
-          <Movie {...el} />
+          <Movie {...el} onRatingChange={onRatingChange} />
         </li>
       );
     });

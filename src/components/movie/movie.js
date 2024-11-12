@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import './movie.css';
-import { Flex, Tag, Image } from 'antd';
+import { Flex, Tag, Image, Rate } from 'antd';
 import { posterFallback } from './poster-fallback';
 
 export default class Movie extends Component {
   shortenText = (description) => {
-    const maxLength = 150;
+    const maxLength = 175;
 
     if (description.length <= maxLength) {
       return description;
@@ -26,7 +26,7 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, date, description, poster } = this.props;
+    const { title, date, description, poster, onRatingChange, id } = this.props;
 
     return (
       <Flex className="movie">
@@ -43,25 +43,34 @@ export default class Movie extends Component {
             <h1 className="movie__title">{title}</h1>
             <div className="movie__rating">Rating</div>
           </header>
-          <main>
-            <div className="movie__date">{date}</div>
-            <div className="movie__genre-wrapper">
-              <Tag
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
-                className="movie__genre-item"
-              >
-                Drama
-              </Tag>
-              <Tag
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
-                className="movie__genre-item"
-              >
-                Romance
-              </Tag>
-            </div>
-            <p className="movie__description">{this.shortenText(description)}</p>
-          </main>
-          <div className="movie__stars"></div>
+
+          <div className="movie__date">{date}</div>
+          <div className="movie__genre-wrapper">
+            <Tag
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
+              className="movie__genre-item"
+            >
+              Drama
+            </Tag>
+            <Tag
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
+              className="movie__genre-item"
+            >
+              Romance
+            </Tag>
+          </div>
+          <p className="movie__description">{this.shortenText(description)}</p>
+
+          <div className="movie__stars-container">
+            <Rate
+              className="movie__stars"
+              allowHalf
+              count={10}
+              onChange={(value) => {
+                onRatingChange(value, id);
+              }}
+            ></Rate>
+          </div>
         </div>
       </Flex>
     );

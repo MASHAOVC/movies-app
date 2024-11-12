@@ -4,21 +4,30 @@
 
 .movie__title {
     margin: 0;
-    margin-bottom: 7px;
     font-size: 20px;
     font-weight: 500;
     max-width: 190px;
+    line-height: 1;
+    margin-bottom: 7px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 41px;
 }
 
 .movie__content-wrapper {
-    padding: 10px 20px 0;
-    width: 268px; 
+    padding: 10px 20px 2px;
+    width: 268px;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .movie__date {
-    margin-bottom: 7px;
     color: #827E7E;
     font-size: 12px;
+    margin-bottom: 7px;
 }
 
 .movie__rating {
@@ -40,4 +49,23 @@
     line-height: 22px;
     font-size: 12px;
     font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex-shrink: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.movie__stars .ant-rate-star {
+    font-size: 16px;
+}
+
+.movie__stars-container {
+    display:  flex;
+    align-items: center;
+    width: 239px;
+    min-height: 46px;
+    position: absolute;
+    bottom: 2px;
 }

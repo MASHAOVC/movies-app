@@ -88,6 +88,7 @@ export default class Search extends Component {
 
   render() {
     const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, page, totalResults } = this.state;
+    const { onRatingChange } = this.props;
 
     return (
       <section className="search">
@@ -100,6 +101,7 @@ export default class Search extends Component {
           inputLabel={inputLabel}
           moviesDataLoaded={moviesDataLoaded}
           network={network}
+          onRatingChange={onRatingChange}
         />
         <Footer
           onPaginationChange={this.onPaginationChange}
