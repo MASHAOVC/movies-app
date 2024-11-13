@@ -41,6 +41,8 @@ export default class Rated extends Component {
             date: el.release_date ? format(new Date(el.release_date), 'MMMM d, yyyy') : el.release_date,
             description: el.overview,
             id: el.id,
+            rating: el.rating,
+            votes: el.vote_average,
           };
         });
 
@@ -65,12 +67,37 @@ export default class Rated extends Component {
     });
   };
 
+  onRatingChangeWrapper = async (value, id) => {
+    const { onRatingChange } = this.props;
+
+    await onRatingChange(value, id);
+
+    this.setState(({ moviesData }) => {
+      let newArr = moviesData.map((el) => {
+        if (el.id === id) {
+          const newItem = { ...el, rating: value };
+          return newItem;
+        }
+
+        return el;
+      });
+
+      return { moviesData: newArr };
+    });
+  };
+
   render() {
     const { moviesData, loading, error, network, page, totalResults } = this.state;
 
     return (
       <div className="rated">
-        <MovieList moviesData={moviesData} loading={loading} error={error} network={network} />
+        <MovieList
+          moviesData={moviesData}
+          loading={loading}
+          error={error}
+          network={network}
+          onRatingChange={this.onRatingChangeWrapper}
+        />
         <Footer
           onPaginationChange={this.onPaginationChange}
           page={page}

@@ -8,6 +8,13 @@ import MoviesService from '../../services/movies-service';
 import { Tabs, ConfigProvider } from 'antd';
 
 export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      activeTabKey: '1',
+    };
+  }
+
   MoviesService = new MoviesService();
 
   componentDidMount() {
@@ -23,25 +30,27 @@ export default class App extends Component {
     });
   };
 
-  onRatingChange = (value, id) => {
-    this.MoviesService.postRating(value, id)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(this.onError);
+  onRatingChange = async (value, id) => {
+    await this.MoviesService.postRating(value, id).catch(this.onError);
+  };
+
+  onTabChange = (key) => {
+    this.setState({ activeTabKey: key });
   };
 
   render() {
+    const { activeTabKey } = this.state;
+
     const tabs = [
       {
         key: '1',
         label: 'Search',
-        children: <Search onError={this.onError} onRatingChange={this.onRatingChange} />,
+        children: <Search activeTabKey={activeTabKey} onError={this.onError} onRatingChange={this.onRatingChange} />,
       },
       {
         key: '2',
         label: 'Rated',
-        children: <Rated onError={this.onError} />,
+        children: <Rated onError={this.onError} onRatingChange={this.onRatingChange} />,
       },
     ];
 
@@ -61,7 +70,14 @@ export default class App extends Component {
             },
           }}
         >
-          <Tabs defaultActiveKey="1" items={tabs} centered></Tabs>
+          <Tabs
+            onChange={this.onTabChange}
+            activeKey={activeTabKey}
+            destroyInactiveTabPane
+            defaultActiveKey="1"
+            items={tabs}
+            centered
+          ></Tabs>
         </ConfigProvider>
       </div>
     );

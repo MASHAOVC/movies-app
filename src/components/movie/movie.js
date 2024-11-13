@@ -26,7 +26,18 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, date, description, poster, onRatingChange, id } = this.props;
+    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes } = this.props;
+    let votesColor = '';
+
+    if (votes <= 3) {
+      votesColor = '#E90000';
+    } else if (votes > 3 && votes <= 5) {
+      votesColor = '#E97E00';
+    } else if (votes > 5 && votes <= 7) {
+      votesColor = '#E9D100';
+    } else {
+      votesColor = '#66E900';
+    }
 
     return (
       <Flex className="movie">
@@ -41,7 +52,11 @@ export default class Movie extends Component {
         <div className="movie__content-wrapper">
           <header>
             <h1 className="movie__title">{title}</h1>
-            <div className="movie__rating">Rating</div>
+            {Boolean(votes) && (
+              <div className="movie__rating" style={{ borderColor: votesColor }}>
+                {votes.toFixed(1)}
+              </div>
+            )}
           </header>
 
           <div className="movie__date">{date}</div>
@@ -62,14 +77,26 @@ export default class Movie extends Component {
           <p className="movie__description">{this.shortenText(description)}</p>
 
           <div className="movie__stars-container">
-            <Rate
-              className="movie__stars"
-              allowHalf
-              count={10}
-              onChange={(value) => {
-                onRatingChange(value, id);
-              }}
-            ></Rate>
+            {activeTabKey === '1' ? (
+              <Rate
+                className="movie__stars"
+                allowHalf
+                count={10}
+                onChange={(value) => {
+                  onRatingChange(value, id);
+                }}
+              ></Rate>
+            ) : (
+              <Rate
+                className="movie__stars"
+                allowHalf
+                count={10}
+                value={rating}
+                onChange={(value) => {
+                  onRatingChange(value, id);
+                }}
+              ></Rate>
+            )}
           </div>
         </div>
       </Flex>

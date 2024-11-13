@@ -44,6 +44,7 @@ export default class Search extends Component {
             date: el.release_date ? format(new Date(el.release_date), 'MMMM d, yyyy') : el.release_date,
             description: el.overview,
             id: el.id,
+            votes: el.vote_average,
           };
         });
         this.onMovieListLoaded(newArr, text, totalResults);
@@ -88,7 +89,7 @@ export default class Search extends Component {
 
   render() {
     const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, page, totalResults } = this.state;
-    const { onRatingChange } = this.props;
+    const { onRatingChange, activeTabKey } = this.props;
 
     return (
       <section className="search">
@@ -102,6 +103,7 @@ export default class Search extends Component {
           moviesDataLoaded={moviesDataLoaded}
           network={network}
           onRatingChange={onRatingChange}
+          activeTabKey={activeTabKey}
         />
         <Footer
           onPaginationChange={this.onPaginationChange}
