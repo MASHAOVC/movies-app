@@ -2,12 +2,13 @@ import { Component } from 'react';
 import './movie-list.css';
 
 import Movie from '../movie';
+import { GenresConsumer } from '../movie-genres-context';
 
 import { Spin, Alert } from 'antd';
 
 export default class MovieList extends Component {
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, onRatingChange, activeTabKey } =
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, onRatingChange, activeTabKey, genres } =
       this.props;
 
     const elements = moviesData.map((el) => {
@@ -15,7 +16,11 @@ export default class MovieList extends Component {
 
       return (
         <li key={id} className="movie-list__item">
-          <Movie {...el} onRatingChange={onRatingChange} activeTabKey={activeTabKey} />
+          <GenresConsumer>
+            {(genres) => {
+              return <Movie {...el} genres={genres} onRatingChange={onRatingChange} activeTabKey={activeTabKey} />;
+            }}
+          </GenresConsumer>
         </li>
       );
     });

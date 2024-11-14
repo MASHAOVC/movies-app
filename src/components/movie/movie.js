@@ -28,7 +28,8 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes, genreIds } = this.props;
+    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes, genreIds, genres } =
+      this.props;
     let votesColor = '';
 
     if (votes <= 3) {
