@@ -45,6 +45,7 @@ export default class Search extends Component {
             description: el.overview,
             id: el.id,
             votes: el.vote_average,
+            genreIds: el.genre_ids,
           };
         });
         this.onMovieListLoaded(newArr, text, totalResults);

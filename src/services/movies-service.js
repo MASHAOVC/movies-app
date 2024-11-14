@@ -86,4 +86,10 @@ export default class MoviesService {
 
     return res;
   }
+
+  async getGenres() {
+    const res = await this.getResource('https://api.themoviedb.org/3/genre/movie/list?language=en');
+
+    return res;
+  }
 }

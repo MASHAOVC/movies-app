@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import './movie-list.css';
-import { Spin, Alert } from 'antd';
+
 import Movie from '../movie';
+
+import { Spin, Alert } from 'antd';
 
 export default class MovieList extends Component {
   render() {

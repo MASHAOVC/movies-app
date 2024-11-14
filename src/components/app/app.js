@@ -4,6 +4,7 @@ import './app.css';
 import Search from '../search';
 import Rated from '../rated';
 import MoviesService from '../../services/movies-service';
+import { GenresProvider } from '../movie-genres-context';
 
 import { Tabs, ConfigProvider } from 'antd';
 
@@ -12,6 +13,7 @@ export default class App extends Component {
     super();
     this.state = {
       activeTabKey: '1',
+      genres: [],
     };
   }
 
@@ -19,6 +21,11 @@ export default class App extends Component {
 
   componentDidMount() {
     this.MoviesService.initGuestSession().catch(this.onError);
+    this.MoviesService.getGenres()
+      .then((res) => {
+        this.setState({ genres: res.genres });
+      })
+      .catch(this.onError);
   }
 
   onError = (err) => {
@@ -39,7 +46,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { activeTabKey } = this.state;
+    const { activeTabKey, genres } = this.state;
 
     const tabs = [
       {
@@ -55,31 +62,33 @@ export default class App extends Component {
     ];
 
     return (
-      <div className="app">
-        <ConfigProvider
-          theme={{
-            components: {
-              Tabs: {
-                itemSelectedColor: '#1890FF',
-                itemColor: '#000000A6',
-                inkBarColor: '#1890FF',
-                fontFamily: "'Inter', sans-serif",
-                lineWidth: 0,
-                lineHeight: 2,
-              },
+      <ConfigProvider
+        theme={{
+          components: {
+            Tabs: {
+              itemSelectedColor: '#1890FF',
+              itemColor: '#000000A6',
+              inkBarColor: '#1890FF',
+              fontFamily: "'Inter', sans-serif",
+              lineWidth: 0,
+              lineHeight: 2,
             },
-          }}
-        >
-          <Tabs
-            onChange={this.onTabChange}
-            activeKey={activeTabKey}
-            destroyInactiveTabPane
-            defaultActiveKey="1"
-            items={tabs}
-            centered
-          ></Tabs>
-        </ConfigProvider>
-      </div>
+          },
+        }}
+      >
+        <GenresProvider value={genres}>
+          <div className="app">
+            <Tabs
+              onChange={this.onTabChange}
+              activeKey={activeTabKey}
+              destroyInactiveTabPane
+              defaultActiveKey="1"
+              items={tabs}
+              centered
+            ></Tabs>
+          </div>
+        </GenresProvider>
+      </ConfigProvider>
     );
   }
 }

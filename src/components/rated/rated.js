@@ -43,6 +43,7 @@ export default class Rated extends Component {
             id: el.id,
             rating: el.rating,
             votes: el.vote_average,
+            genreIds: el.genre_ids,
           };
         });
 

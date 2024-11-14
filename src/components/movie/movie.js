@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import './movie.css';
-import { Flex, Tag, Image, Rate } from 'antd';
+
 import { posterFallback } from './poster-fallback';
+
+import { Flex, Tag, Image, Rate } from 'antd';
 
 export default class Movie extends Component {
   shortenText = (description) => {
@@ -26,7 +28,7 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes } = this.props;
+    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes, genreIds } = this.props;
     let votesColor = '';
 
     if (votes <= 3) {
@@ -67,12 +69,12 @@ export default class Movie extends Component {
             >
               Drama
             </Tag>
-            <Tag
+            {/* <Tag
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
               className="movie__genre-item"
             >
               Romance
-            </Tag>
+            </Tag> */}
           </div>
           <p className="movie__description">{this.shortenText(description)}</p>
 
