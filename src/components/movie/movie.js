@@ -73,19 +73,19 @@ export default class Movie extends Component {
 
     return (
       <Flex className="movie">
+        <div className="movie__mobile-poster-wrapper">
+          <Image
+            className="movie__poster"
+            height={isMobile ? '91px' : '279px'}
+            width={isMobile ? '60px' : '183px'}
+            fallback={posterFallback}
+            preview={Boolean(poster)}
+            src={poster}
+            alt="Poster"
+          />
+        </div>
         <div className="movie__content-wrapper">
           <div className="movie__mobile-wrapper">
-            <div className="movie__mobile-poster-wrapper">
-              <Image
-                className="movie__poster"
-                height={isMobile ? '91px' : '279px'}
-                width={isMobile ? '60px' : '183px'}
-                fallback={posterFallback}
-                preview={Boolean(poster)}
-                src={poster}
-                alt="Poster"
-              />
-            </div>
             <div className="movie__mobile-header-wrapper">
               <h1 className="movie__title">{title}</h1>
               {Boolean(votes) && (
