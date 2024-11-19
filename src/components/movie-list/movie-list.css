@@ -10,7 +10,18 @@
 
 .movie-list__item {
     list-style: none;
-    position: relative;
-    width: 451px;
-    box-shadow: 0 4px 12px 0 #00000026;
+}
+
+@media screen and (max-width: 420px) {
+    .movie-list {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 420px;
+        margin-bottom: 20px;
+    }
+
+    .movie-list__item {
+        width: 387px;
+    }
 }

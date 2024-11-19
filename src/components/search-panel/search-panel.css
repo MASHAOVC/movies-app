@@ -6,3 +6,9 @@
     margin-bottom: 34px;
 }
 
+@media screen and (max-width: 420px) {
+    .search-panel {
+        width: 388px;
+        margin-bottom: 10px;
+    }
+}

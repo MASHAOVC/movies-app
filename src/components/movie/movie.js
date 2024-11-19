@@ -6,6 +6,25 @@ import { posterFallback } from './poster-fallback';
 import { Flex, Tag, Image, Rate } from 'antd';
 
 export default class Movie extends Component {
+  constructor() {
+    super();
+    this.state = {
+      windowWidth: window.innerWidth,
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleResize = () => {
+    this.setState({ windowWidth: window.innerWidth });
+  };
+
   shortenText = (description) => {
     const maxLength = 175;
 
@@ -27,10 +46,20 @@ export default class Movie extends Component {
     return resultString + ' ...';
   };
 
+  selectGenres = () => {
+    const { genreIds, genres } = this.props;
+
+    return genreIds.map((id) => {
+      return genres.find((genre) => id === genre.id);
+    });
+  };
+
   render() {
     const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes, genreIds, genres } =
       this.props;
+    const { windowWidth } = this.state;
     let votesColor = '';
+    const isMobile = windowWidth <= 420;
 
     if (votes <= 3) {
       votesColor = '#E90000';
@@ -44,41 +73,43 @@ export default class Movie extends Component {
 
     return (
       <Flex className="movie">
-        <Image
-          className="movie__poster"
-          style={{ width: '183px', height: '100%', objectFit: 'cover' }}
-          fallback={posterFallback}
-          preview={Boolean(poster)}
-          src={poster}
-          alt="Poster"
-        />
         <div className="movie__content-wrapper">
-          <header>
-            <h1 className="movie__title">{title}</h1>
-            {Boolean(votes) && (
-              <div className="movie__rating" style={{ borderColor: votesColor }}>
-                {votes.toFixed(1)}
+          <div className="movie__mobile-wrapper">
+            <div className="movie__mobile-poster-wrapper">
+              <Image
+                className="movie__poster"
+                height={isMobile ? '91px' : '279px'}
+                width={isMobile ? '60px' : '183px'}
+                fallback={posterFallback}
+                preview={Boolean(poster)}
+                src={poster}
+                alt="Poster"
+              />
+            </div>
+            <div className="movie__mobile-header-wrapper">
+              <h1 className="movie__title">{title}</h1>
+              {Boolean(votes) && (
+                <div className="movie__rating" style={{ borderColor: votesColor }}>
+                  {votes.toFixed(1)}
+                </div>
+              )}
+              <div className="movie__date">{date}</div>
+              <div className="movie__genre-wrapper">
+                {this.selectGenres().map((genre) => {
+                  return (
+                    <Tag
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
+                      className="movie__genre-item"
+                      key={genre.id}
+                    >
+                      {genre.name}
+                    </Tag>
+                  );
+                })}
               </div>
-            )}
-          </header>
-
-          <div className="movie__date">{date}</div>
-          <div className="movie__genre-wrapper">
-            <Tag
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
-              className="movie__genre-item"
-            >
-              Drama
-            </Tag>
-            {/* <Tag
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, color: '#000000A6' }}
-              className="movie__genre-item"
-            >
-              Romance
-            </Tag> */}
+            </div>
           </div>
           <p className="movie__description">{this.shortenText(description)}</p>
-
           <div className="movie__stars-container">
             {activeTabKey === '1' ? (
               <Rate

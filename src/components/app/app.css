@@ -3,3 +3,9 @@
     width: 1010px;
     padding-top: 13px;
 }
+
+@media screen and (max-width: 420px) {
+    .app {
+        width: 100%;
+    }
+}
