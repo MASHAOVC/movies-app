@@ -8,7 +8,7 @@ import { Spin, Alert } from 'antd';
 
 export default class MovieList extends Component {
   render() {
-    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, onRatingChange, activeTabKey, genres } =
+    const { moviesData, loading, error, inputLabel, moviesDataLoaded, network, onRatingChange, activeTabKey } =
       this.props;
 
     const elements = moviesData.map((el) => {

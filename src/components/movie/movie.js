@@ -55,11 +55,11 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes, genreIds, genres } =
-      this.props;
+    const { title, date, description, poster, onRatingChange, id, activeTabKey, rating, votes } = this.props;
     const { windowWidth } = this.state;
-    let votesColor = '';
+
     const isMobile = windowWidth <= 420;
+    let votesColor = '';
 
     if (votes <= 3) {
       votesColor = '#E90000';
