@@ -89,15 +89,15 @@
         box-sizing: border-box;
     }
 
+    .movie__date {
+        margin-bottom: 4px;
+    }
+
     .movie__content-wrapper {
         padding: 2px 0 0;
         display: flex;
         flex-direction: column;
         width: 100%;
-    }
-
-    .movie__date {
-        margin-bottom: 2px;
     }
 
     .movie__mobile-poster-wrapper {
@@ -117,11 +117,9 @@
 
     .movie__title {
         max-width: 255px;
-        margin-bottom: 0;
-    }
-
-    .movie__genre-wrapper {
-        margin-bottom: 0;
+        min-height: 21px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
     }
 
     .movie__rating {
@@ -131,5 +129,12 @@
 
     .movie__stars-container {
         right: 0;
+    }
+
+    .movie__description {
+        position: absolute;
+        left: 10px;
+        top: 120px;
+        width: 367px;
     }
 }
